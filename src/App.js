@@ -1,15 +1,63 @@
 import "./App.css";
 import { Button, Input, DatePicker, TimePicker, Space } from "antd";
-import moment from "moment";
 import React, { useState } from "react";
+import lastPlateDigit from "./Assets/scripts.js/functions";
+import rulesForLastDigitDay from "./Assets/scripts.js/rules";
 
 function App() {
   const [plateNumber, setPlateNumber] = useState("");
   const [result, setResult] = useState(false);
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(0);
   const [date, setDate] = useState("");
+  const [day, setDay] = useState(0);
+
+  //function to evaluate hour
+  function getSeconds(hour) {
+    let s = hour.split(":");
+    //console.log('desde getseconds',s[0])
+    const inSeconds =
+      parseInt(s[0]) * 3600 + parseInt(s[1]) * 60 + parseInt(s[2]);
+    //console.log('en segundos ', inSeconds)
+    return inSeconds;
+  }
+  const fromMorning = getSeconds("7:00:00");
+  const toMorning = getSeconds("9:30:00");
+  const fromAfternoon = getSeconds("16:00:00");
+  const toAfternoon = getSeconds("19:30:00");
+
+  function rulesForLastDigitTime(hour) {
+    console.log("hora en segundos", hour);
+    if (hour > fromMorning && hour < toMorning) {
+      return false;
+    }
+    if (hour > fromAfternoon && hour < toAfternoon) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //function to evaluate all of the results
   const getResults = () => {
     console.log(plateNumber);
+    console.log(lastPlateDigit(plateNumber));
+    const lastNumber = lastPlateDigit(plateNumber);
+    console.log(
+      "tiene restriccion vehicular?",
+      rulesForLastDigitDay(day, lastNumber)
+    );
+    console.log(
+      "tiene restriccion vehicular por la hora?",
+      rulesForLastDigitTime(time)
+    );
+    if(rulesForLastDigitDay(day, lastNumber) === true && rulesForLastDigitTime(time) === true){
+
+      alert("Es libre de circular!")
+    }
+    else {
+      alert("No puede circular este dia!")
+    }
+
     if (!result) {
       setResult(true);
     } else {
@@ -21,11 +69,20 @@ function App() {
     console.log("valor ", value);
     console.log("fecha escogida ", dateString);
     setDate(dateString);
+    if (value) {
+      console.log("dia de la semana", value._d.getDay());
+      setDay(value._d.getDay()); //variable a enviar
+    }
   };
   const onChangeTime = (value, timeString) => {
-    console.log("valor ", value);
+    if (value) {
+      console.log("valor ", value._d);
+    }
+
     console.log("hora escogida ", timeString);
-    setTime(timeString);
+    const timeInSeconds=getSeconds(timeString);
+    setTime(timeInSeconds);
+    console.log("segundos desde change time", getSeconds(timeString));
   };
 
   return (
@@ -33,10 +90,13 @@ function App() {
       <div className="block">
         <h1 className="title">Adiosmultas.com</h1>
 
-        <p className="subtitle"><i>Evita multas y malos ratos con nuestra app</i></p>
+        <p className="subtitle">
+          <i>Evita multas y malos ratos con nuestra app</i>
+        </p>
         <p className="subtitle">
           Escribe la placa de tu auto, la fecha en la que deseas salir y la
-          hora. Al presionar el botón <b>Analizar</b> la app te dice si puedes salir o no ese día.
+          hora. Al presionar el botón <b>Analizar</b> la app te dice si puedes
+          salir o no ese día.
         </p>
         <Input
           maxLength="7"

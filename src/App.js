@@ -1,88 +1,76 @@
 import "./App.css";
-import { Button, Input, DatePicker, TimePicker, Space } from "antd";
+import { Button, Input, DatePicker, TimePicker, Space, Modal } from "antd";
 import React, { useState } from "react";
 import lastPlateDigit from "./Assets/scripts.js/functions";
 import rulesForLastDigitDay from "./Assets/scripts.js/rules";
-
+import rulesForLastDigitTime from "./Assets/scripts.js/rulesTime";
+import getSeconds from "./Assets/scripts.js/inSecondsFunc";
+import ResultsModal from "./components/ResultsModal";
 function App() {
   const [plateNumber, setPlateNumber] = useState("");
-  const [result, setResult] = useState(false);
   const [time, setTime] = useState(0);
   const [date, setDate] = useState("");
   const [day, setDay] = useState(0);
-
-  //function to evaluate hour
-  function getSeconds(hour) {
-    let s = hour.split(":");
-    //console.log('desde getseconds',s[0])
-    const inSeconds =
-      parseInt(s[0]) * 3600 + parseInt(s[1]) * 60 + parseInt(s[2]);
-    //console.log('en segundos ', inSeconds)
-    return inSeconds;
-  }
-  const fromMorning = getSeconds("7:00:00");
-  const toMorning = getSeconds("9:30:00");
-  const fromAfternoon = getSeconds("16:00:00");
-  const toAfternoon = getSeconds("19:30:00");
-
-  function rulesForLastDigitTime(hour) {
-    console.log("hora en segundos", hour);
-    if (hour > fromMorning && hour < toMorning) {
-      return false;
-    }
-    if (hour > fromAfternoon && hour < toAfternoon) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [result, setResult] = useState("Resultado de facto!");
 
   //function to evaluate all of the results
   const getResults = () => {
-    console.log(plateNumber);
-    console.log(lastPlateDigit(plateNumber));
+    showModal();
     const lastNumber = lastPlateDigit(plateNumber);
     console.log(
-      "tiene restriccion vehicular?",
+      "¿Su auto puede salir en hora pico?",
       rulesForLastDigitDay(day, lastNumber)
     );
-    console.log(
-      "tiene restriccion vehicular por la hora?",
-      rulesForLastDigitTime(time)
-    );
-    if(rulesForLastDigitDay(day, lastNumber) === true && rulesForLastDigitTime(time) === true){
+    console.log("¿Puede circular a esta hora?", rulesForLastDigitTime(time));
+    if (
+      rulesForLastDigitDay(day, lastNumber) === true &&
+      rulesForLastDigitTime(time) === true
+    ) {
+      setResult("Es libre de circular!");
+      return;
+    }
+    if (
+      rulesForLastDigitDay(day, lastNumber) === true &&
+      rulesForLastDigitTime(time) === false
+    ) {
+      setResult("Es libre de circular pero te espera mucho tráfico!");
 
-      alert("Es libre de circular!")
+      return;
+    } 
+    if (
+      rulesForLastDigitDay(day, lastNumber) === false &&
+      rulesForLastDigitTime(time) === true
+    ) {
+      setResult("Hoy tiene pico y placa pero la hora en la que desea salir es permitido circular!");
+
+      return;
     }
     else {
-      alert("No puede circular este dia!")
+      setResult("No puede circular este dia!");
+      return;
     }
-
-    if (!result) {
-      setResult(true);
-    } else {
-      setResult(false);
-    }
-    console.log("hora a consultar: ", time);
   };
   const onChangeDate = (value, dateString) => {
-    console.log("valor ", value);
-    console.log("fecha escogida ", dateString);
     setDate(dateString);
     if (value) {
-      console.log("dia de la semana", value._d.getDay());
-      setDay(value._d.getDay()); //variable a enviar
+      setDay(value._d.getDay());
     }
   };
   const onChangeTime = (value, timeString) => {
-    if (value) {
-      console.log("valor ", value._d);
-    }
-
-    console.log("hora escogida ", timeString);
-    const timeInSeconds=getSeconds(timeString);
+    const timeInSeconds = getSeconds(timeString);
     setTime(timeInSeconds);
-    console.log("segundos desde change time", getSeconds(timeString));
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   return (
@@ -133,13 +121,14 @@ function App() {
         <Button className="btn" type="primary" onClick={getResults}>
           Analizar
         </Button>
-        {result ? (
-          <div>
-            <p className="subtitle"></p>El resultado es positivo
-          </div>
-        ) : (
-          <div></div>
-        )}
+        <Modal
+          title="Resultado de la consulta"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <ResultsModal message={result} />
+        </Modal>
       </div>
     </div>
   );

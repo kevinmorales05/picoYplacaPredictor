@@ -37,6 +37,14 @@
   border-radius: 5px;
   border:black solid 2px;
 }
+.btn:hover{
+  background-color: #43B02A;
+  border:white solid 2px;
+}
+.btn:visited{
+  background-color: black;
+  border:white solid 2px;
+}
 .title{
   -webkit-text-stroke: 2px black;
   color:white;

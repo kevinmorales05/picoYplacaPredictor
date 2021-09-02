@@ -6,6 +6,7 @@ import rulesForLastDigitDay from "./Assets/scripts.js/rules";
 import rulesForLastDigitTime from "./Assets/scripts.js/rulesTime";
 import getSeconds from "./Assets/scripts.js/inSecondsFunc";
 import ResultsModal from "./components/ResultsModal";
+import validateInformation from "./Assets/scripts.js/validations";
 function App() {
   const [plateNumber, setPlateNumber] = useState("");
   const [time, setTime] = useState(0);
@@ -13,41 +14,48 @@ function App() {
   const [day, setDay] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [result, setResult] = useState("Resultado de facto!");
+  const [message, setMessage] = useState(false);
 
   //function to evaluate all of the results
   const getResults = () => {
-    showModal();
-    const lastNumber = lastPlateDigit(plateNumber);
-    console.log(
-      "¿Su auto puede salir en hora pico?",
-      rulesForLastDigitDay(day, lastNumber)
-    );
-    console.log("¿Puede circular a esta hora?", rulesForLastDigitTime(time));
-    if (
-      rulesForLastDigitDay(day, lastNumber) === true &&
-      rulesForLastDigitTime(time) === true
-    ) {
-      setResult("Es libre de circular!");
-      return;
-    }
-    if (
-      rulesForLastDigitDay(day, lastNumber) === true &&
-      rulesForLastDigitTime(time) === false
-    ) {
-      setResult("Es libre de circular pero te espera mucho tráfico!");
+    alert(validateInformation(plateNumber, date, time));
+    if (validateInformation(plateNumber, date, time) === "Datos Correctos!") {
+      showModal();
+      const lastNumber = lastPlateDigit(plateNumber);
+      console.log(
+        "¿Su auto puede salir en hora pico?",
+        rulesForLastDigitDay(day, lastNumber)
+      );
+      console.log("¿Puede circular a esta hora?", rulesForLastDigitTime(time));
+      if (
+        rulesForLastDigitDay(day, lastNumber) === true &&
+        rulesForLastDigitTime(time) === true
+      ) {
+        setResult("Es libre de circular!");
+        return;
+      }
+      if (
+        rulesForLastDigitDay(day, lastNumber) === true &&
+        rulesForLastDigitTime(time) === false
+      ) {
+        setResult("Es libre de circular pero te espera mucho tráfico!");
 
-      return;
-    } 
-    if (
-      rulesForLastDigitDay(day, lastNumber) === false &&
-      rulesForLastDigitTime(time) === true
-    ) {
-      setResult("Hoy tiene pico y placa pero la hora en la que desea salir es permitido circular!");
+        return;
+      }
+      if (
+        rulesForLastDigitDay(day, lastNumber) === false &&
+        rulesForLastDigitTime(time) === true
+      ) {
+        setResult(
+          "Hoy tiene pico y placa pero la hora en la que desea salir es permitido circular!"
+        );
 
-      return;
-    }
-    else {
-      setResult("No puede circular este dia!");
+        return;
+      } else {
+        setResult("No puede circular este dia!");
+        return;
+      }
+    } else {
       return;
     }
   };

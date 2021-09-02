@@ -1,17 +1,16 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
-.main{
+.main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color:  #0032A0;
+  background-color: #0032a0;
   width: 100%;
   height: 700px;
-  background-image: url('./Assets/images/Quito.jpg');
- 
+  background-image: url("./Assets/images/Quito.jpg");
 }
-.block{
-  background-color:  #e31c79;
+.block {
+  background-color: #e31c79;
   border-radius: 25px;
   width: 50%;
   height: 450px;
@@ -30,40 +29,39 @@
 .input {
   width: 30%;
 }
-.btn{
+.btn {
   width: 20%;
   margin-top: 5px;
-  background-color: #00A3E0;
+  background-color: #00a3e0;
   border-radius: 5px;
-  border:black solid 2px;
+  border: black solid 2px;
 }
-.btn:hover{
-  background-color: #43B02A;
-  border:white solid 2px;
+.btn:hover {
+  background-color: #43b02a;
+  border: white solid 2px;
 }
-.btn:visited{
+.btn:visited {
   background-color: black;
-  border:white solid 2px;
+  border: white solid 2px;
 }
-.title{
+.title {
   -webkit-text-stroke: 2px black;
-  color:white;
+  color: white;
   font-size: 40px;
   font-family: Helvetica, sans-serif;
   font-weight: bold;
 }
-.subtitle{
+.subtitle {
   font-size: 15px;
   font-family: Helvetica, sans-serif;
   width: 70%;
   text-align: center;
-  
 }
-.input{
+.input {
   margin-top: 5px;
   margin-bottom: 5px;
   width: 160px;
   height: 40px;
-  border:black solid 2px;
+  border: black solid 2px;
   border-radius: 5px;
 }

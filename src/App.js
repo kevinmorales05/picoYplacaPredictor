@@ -1,12 +1,12 @@
 import "./App.css";
 import { Button, Input, DatePicker, TimePicker, Space, Modal } from "antd";
 import React, { useState } from "react";
-import lastPlateDigit from "./Assets/scripts.js/functions";
-import rulesForLastDigitDay from "./Assets/scripts.js/rules";
-import rulesForLastDigitTime from "./Assets/scripts.js/rulesTime";
-import getSeconds from "./Assets/scripts.js/inSecondsFunc";
+import lastPlateDigit from "./Assets/scripts/functions";
+import rulesForLastDigitDay from "./Assets/scripts/rules";
+import rulesForLastDigitTime from "./Assets/scripts/rulesTime";
+import getSeconds from "./Assets/scripts/inSecondsFunc";
 import ResultsModal from "./components/ResultsModal";
-import validateInformation from "./Assets/scripts.js/validations";
+import validateInformation from "./Assets/scripts/validations";
 function App() {
   const [plateNumber, setPlateNumber] = useState("");
   const [time, setTime] = useState(0);
@@ -14,7 +14,6 @@ function App() {
   const [day, setDay] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [result, setResult] = useState("Resultado de facto!");
-  const [message, setMessage] = useState(false);
 
   //function to evaluate all of the results
   const getResults = () => {

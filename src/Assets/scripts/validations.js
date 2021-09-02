@@ -7,7 +7,7 @@ function validatePlate(plateNumber) {
     return "Por favor escriba un número de placa válido!";
   }
   for (let i = 0; i < 3; i++) {
-    if (!letters.includes(plateNumber[i])) {
+    if (!letters.includes(plateNumber[i].toLowerCase())) {
       return "Por favor escriba caracteres alfabéticos en los primeros 3 caracteres de la placa de su automóvil!";
     }
   }
@@ -23,17 +23,20 @@ export default function validateInformation(
   dateString,
   hourString
 ) {
-  if (plateNumber === "" || dateString === "" || hourString === "") {
+  if (plateNumber === "" || dateString === "" || hourString === 0) {
     return "Le falta llenar uno o más campos!";
+  }
+  if(plateNumber.length < 6){
+    return "El nombre de la placa está incompleto, al menos necesita 6 caracteres!";
   }
   const timeNow = getSeconds(moment().format("hh:mm:ss"));
   const dateNow = moment().format("YYYY-MM-DD");
   const dateFuture = dateString;
-  console.log("fecha futuro", dateFuture);
-  console.log("fecha ahora", dateNow);
-  console.log("timenow", timeNow);
+  //console.log("fecha futuro", dateFuture);
+  //console.log("fecha ahora", dateNow);
+  //console.log("timenow", timeNow);
   const timeInFuture = hourString;
-  console.log("timefuture", timeInFuture);
+ // console.log("timefuture", timeInFuture);
   if (dateFuture < dateNow) {
     return "Escoja una fecha en el futuro!";
   }

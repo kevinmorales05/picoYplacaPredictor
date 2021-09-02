@@ -23,5 +23,3 @@ export default function rulesForLastDigitDay(day, digit) {
     return false;
   }
 }
-
-

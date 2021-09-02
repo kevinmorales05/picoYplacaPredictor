@@ -20,7 +20,6 @@
   display: flex;
   flex-direction: column;
   align-self: center;
-
   border-color: white;
   border-width: 3px;
   border-style: solid;
@@ -64,4 +63,32 @@
   height: 40px;
   border: black solid 2px;
   border-radius: 5px;
+}
+@media (max-width: 600px) {
+  .block{
+    width: 90%;
+    height: fit-content;
+  }
+  .main{
+    height: 850px;
+  }
+  .title {
+    -webkit-text-stroke: 1px black;
+    color: white;
+    font-size: 25px;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+  }
+  .subtitle {
+    font-size: 12px;
+    font-family: Helvetica, sans-serif;
+    width: 80%;
+    text-align: center;
+  }
+  .btn {
+    width: 50%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
 }
